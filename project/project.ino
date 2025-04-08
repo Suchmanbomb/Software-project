@@ -60,8 +60,37 @@ void setup() {
   tft.setTextColor(TFT_GREEN, TFT_BLACK);
   tft.drawString("Connected to WiFi", 10, 10);
   Serial.println("Connected to WiFi");
-  // Add your code bellow 
+  // Add your code here 
+    
+    #include <TFT_eSPI.h> // om rätt bibliotek
 
+  TFT_eSPI tft = TFT_eSPI();  // Initierar TFT-skärmen
+
+  void setup()
+  {
+
+    tft.init();               // Initierar skärmen
+    tft.setRotation(1);       // Roterar skärmen om det behövs
+    tft.fillScreen(TFT_BLACK);
+    
+    // Boot screen
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.drawString("Team 5", 10, 30);         //  teamnummer
+    tft.drawString("Version 1.0", 10, 60);     // versionsinfo
+
+    delay(3000);  // Visa boot screen i 3 sekunder
+
+  }
+
+  void loop() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.drawString("Hello student", 10, 10);
+    delay(1000);
+  }
+  
 }
 
 /**
