@@ -13,8 +13,8 @@
 
 
 // Remember to remove these before commiting in GitHub
-String ssid = "ssid";
-String password = "password";
+String ssid = "BTH_Guest";
+String password = "Pingvin89Opel";
 
 // "tft" is the graphics libary, which has functions to draw on the screen
 TFT_eSPI tft = TFT_eSPI();
@@ -61,14 +61,8 @@ void setup() {
   tft.drawString("Connected to WiFi", 10, 10);
   Serial.println("Connected to WiFi");
   // Add your code here 
- 
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.drawString("Team 5", 10, 10); // Shows teamnumber
-  tft.drawString("Version 1.0", 10, 40); // shows version
-
-  delay(3000); 
+  
+  
 
 }
 
@@ -80,9 +74,9 @@ void loop() {
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setTextSize(2);
-  tft.drawString("Hello student", 10, 10);
+  tft.drawString("Team 5, version 1.0", 10, 10);
 
-  delay(1000);
+  delay(3000);
 }
 
 
