@@ -34,20 +34,30 @@ WiFiClient wifi_client;
 void setup() {
   // Initialize Serial for debugging
   Serial.begin(115200);
-  // Wait for the Serial port to be ready
   while (!Serial);
   Serial.println("Starting ESP32 program...");
+
+  // Initiera skärmen
   tft.init();
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
 
+  // === US1.1: Boot screen ===
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
+  tft.drawString("Team 5", 10, 30);         // teamnummer
+  tft.drawString("Version 1.0", 10, 60);    // versionsinfo
+  delay(3000);  // Visa boot screen i 3 sekunder
+  tft.fillScreen(TFT_BLACK); // Rensa skärmen efter boot
+
+  // Initiera knappar
   pinMode(PIN_BUTTON_1, INPUT_PULLUP);
   pinMode(PIN_BUTTON_2, INPUT_PULLUP);
 
-  // Connect to WIFI
+  // Anslut till WiFi
   WiFi.begin(ssid, password);
 
-  // Will be stuck here until a proper wifi is configured
+  // Vänta på WiFi-anslutning
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     tft.fillScreen(TFT_BLACK);
@@ -60,28 +70,16 @@ void setup() {
   tft.setTextColor(TFT_GREEN, TFT_BLACK);
   tft.drawString("Connected to WiFi", 10, 10);
   Serial.println("Connected to WiFi");
+
+  // Lägg till din fortsatta setup-kod här vid behov
+}
+
   // Add your code here 
     
     #include <TFT_eSPI.h> // om rätt bibliotek
 
-  TFT_eSPI tft = TFT_eSPI();  // Initierar TFT-skärmen
 
-  void setup()
-  {
-
-    tft.init();               // Initierar skärmen
-    tft.setRotation(1);       // Roterar skärmen om det behövs
-    tft.fillScreen(TFT_BLACK);
-    
-    // Boot screen
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.setTextSize(2);
-    tft.drawString("Team 5", 10, 30);         //  teamnummer
-    tft.drawString("Version 1.0", 10, 60);     // versionsinfo
-
-    delay(3000);  // Visa boot screen i 3 sekunder
-
-  }
+  
 
   void loop() {
     tft.fillScreen(TFT_BLACK);
@@ -90,21 +88,6 @@ void setup() {
     tft.drawString("Hello student", 10, 10);
     delay(1000);
   }
-  
-}
-
-/**
- * This is the main loop function that runs continuously after setup.
- * Add your code here to perform tasks repeatedly.
- */
-void loop() {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
-  tft.drawString("Hello student", 10, 10);
-
-  delay(1000);
-}
 
 
 // TFT Pin check
