@@ -62,8 +62,6 @@ void setup() {
   Serial.println("Connected to WiFi");
   // Add your code here 
   
-  
-
 }
 
 /**
@@ -77,7 +75,54 @@ void loop() {
   tft.drawString("Team 5, version 1.0", 10, 10);
 
   delay(3000);
-}
+
+  if (httpCode == HTTP_CODE_OK) {
+    auto responseText = http.getString();
+    DynamicJsonDocument weatherData(16384);
+    DeserializationError error = deserializeJson(weatherData, responseText);
+  
+    if (!error) {
+      tft.fillScreen(TFT_BLACK);
+      tft.setCursor(5, 5);  // Liten marginal
+  
+      JsonObject forecast = weatherData["timeSeries"][0];
+      JsonArray params = forecast["parameters"];
+  
+      float temperature = 0.0;
+      float wind = 0.0;
+      float humidity = 0.0;
+  
+      for (JsonObject item : params) {
+        String paramName = item["name"];
+        float value = item["values"][0];
+  
+        if (paramName == "t") {
+          temperature = value;
+        } else if (paramName == "ws") {
+          wind = value;
+        } else if (paramName == "r") {
+          humidity = value;
+        }
+      }
+  
+      tft.setTextColor(TFT_WHITE, TFT_BLACK);
+      tft.setTextSize(2);
+      tft.println("Karlskrona");
+      tft.println();
+      tft.printf("Temp: %.1f C\n", temperature);
+      tft.printf("Wind: %.1f m/s\n", wind);
+      tft.printf("Humidity: %.0f%%\n", humidity);
+    } else {
+      tft.fillScreen(TFT_RED);
+      tft.setCursor(10, 10);
+      tft.setTextColor(TFT_WHITE, TFT_RED);
+      tft.setTextSize(2);
+      tft.println("JSON parse error!");
+    }
+  
+    http.end();
+  }
+  
 
 
 // TFT Pin check
