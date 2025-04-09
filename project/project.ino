@@ -75,36 +75,37 @@ void loop() {
   tft.drawString("Team 5, version 1.0", 10, 10);
 
   delay(3000);
+  HTTPClient http;
+  String smhiUrl = "https://opendata-download.metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/15.5869/lat/56.1612/data.json";
+
+  http.begin(smhiUrl);
+  int httpCode = http.GET(); //HTTP-calll to SMHI 
 
   if (httpCode == HTTP_CODE_OK) {
     auto responseText = http.getString();
-    DynamicJsonDocument weatherData(16384);
+    DynamicJsonDocument weatherData(16384); //document to store JSON_data
     DeserializationError error = deserializeJson(weatherData, responseText);
-  
+
     if (!error) {
       tft.fillScreen(TFT_BLACK);
-      tft.setCursor(5, 5);  // Liten marginal
-  
+      tft.setCursor(5, 5);
+
       JsonObject forecast = weatherData["timeSeries"][0];
       JsonArray params = forecast["parameters"];
-  
+      //loop through all data, stores under different parameters 
       float temperature = 0.0;
       float wind = 0.0;
       float humidity = 0.0;
-  
+
       for (JsonObject item : params) {
         String paramName = item["name"];
         float value = item["values"][0];
-  
-        if (paramName == "t") {
-          temperature = value;
-        } else if (paramName == "ws") {
-          wind = value;
-        } else if (paramName == "r") {
-          humidity = value;
-        }
+
+        if (paramName == "t")      temperature = value;
+        else if (paramName == "ws") wind = value;
+        else if (paramName == "r")  humidity = value;
       }
-  
+      //shows wheater on the screen 
       tft.setTextColor(TFT_WHITE, TFT_BLACK);
       tft.setTextSize(2);
       tft.println("Karlskrona");
@@ -119,9 +120,17 @@ void loop() {
       tft.setTextSize(2);
       tft.println("JSON parse error!");
     }
-  
-    http.end();
+  } else {
+    tft.fillScreen(TFT_RED);
+    tft.setCursor(10, 10);
+    tft.setTextColor(TFT_WHITE, TFT_RED);
+    tft.setTextSize(2);
+    tft.println("HTTP error!");
   }
+
+  http.end(); // Avslutar HTTP-förbindelsen
+  delay(10000); // Vänta 10 sekunder innan nästa uppdatering
+}
   
 
 
