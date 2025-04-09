@@ -76,7 +76,7 @@ void loop() {
 
   delay(3000);
   HTTPClient http;
-  String smhiUrl = "https://opendata-download.metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/15.5869/lat/56.1612/data.json";
+  String smhiUrl = "https://opendata-download-metanalys.smhi.se/api/category/mesan2g/version/1/geotype/point/lon/16/lat/58/data.json";
 
   http.begin(smhiUrl);
   int httpCode = http.GET(); //HTTP-calll to SMHI 
