@@ -24,6 +24,7 @@ TFT_eSPI tft = TFT_eSPI();
 #define DISPLAY_HEIGHT 170
 
 WiFiClient wifi_client;
+int displayMode = 0;
 
 /**
  * Setup function
@@ -69,6 +70,17 @@ void setup() {
  * Add your code here to perform tasks repeatedly.
  */
 void loop() {
+  int button1 = digitalRead(PIN_BUTTON_1);
+int button2 = digitalRead(PIN_BUTTON_2);
+
+if (button1 == LOW) {
+  displayMode = 0;
+  delay(300); // debounce
+} else if (button2 == LOW) {
+  displayMode = 1;
+  delay(300); // debounce
+}
+if (displayMode == 1) {
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setTextSize(2);
@@ -131,8 +143,16 @@ void loop() {
   http.end(); // Avslutar HTTP-förbindelsen
   delay(10000); // Vänta 10 sekunder innan nästa uppdatering
 }
-  
+else if (displayMode == 0) {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.setTextSize(2);
+  tft.drawString("Team 5", 10, 10);
+  tft.drawString("Version 1.0", 10, 40);
+  delay(3000);
+}
 
+}
 
 // TFT Pin check
   //////////////////
