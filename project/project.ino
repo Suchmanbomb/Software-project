@@ -154,6 +154,7 @@ else if (displayMode == 0) {
 
 }
 
+
 // TFT Pin check
   //////////////////
  // DO NOT TOUCH //
