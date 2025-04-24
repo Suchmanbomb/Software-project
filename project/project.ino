@@ -14,7 +14,7 @@
 
 // Remember to remove these before commiting in GitHub
 String ssid = "BTH_Guest";
-String password = "piraya41Kia";
+String password = "Glass91Volvo";
 
 // "tft" is the graphics libary, which has functions to draw on the screen
 TFT_eSPI tft = TFT_eSPI();
@@ -24,7 +24,6 @@ TFT_eSPI tft = TFT_eSPI();
 #define DISPLAY_HEIGHT 170
 
 WiFiClient wifi_client;
-int displayMode = 0; // background
 
 /**
  * Setup function
@@ -61,8 +60,8 @@ void setup() {
   tft.setTextColor(TFT_GREEN, TFT_BLACK);
   tft.drawString("Connected to WiFi", 10, 10);
   Serial.println("Connected to WiFi");
-  // Add your code here 
-  
+  // Add your code bellow 
+
 }
 
 /**
@@ -70,89 +69,13 @@ void setup() {
  * Add your code here to perform tasks repeatedly.
  */
 void loop() {
-  int button1 = digitalRead(PIN_BUTTON_1); // us2.1
-int button2 = digitalRead(PIN_BUTTON_2); // us2.1
-
-if (button1 == LOW) { // us2.1
-  displayMode = 0;// us2.1
-  delay(300); // debounce // us2.1
-} else if (button2 == LOW) { // us2.1
-  displayMode = 1; // us2.1
-  delay(300); // debounce // us2.1
-} // us2.1
-if (displayMode == 1) { // us2.1
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setTextSize(2);
-  tft.drawString("Team 5, version 1.0", 10, 10);
-
-  delay(3000);
-  HTTPClient http;
-  String smhiUrl = "https://opendata-download-metanalys.smhi.se/api/category/mesan2g/version/1/geotype/point/lon/16/lat/58/data.json";
-
-  http.begin(smhiUrl);
-  int httpCode = http.GET(); //HTTP-calll to SMHI 
-
-  if (httpCode == HTTP_CODE_OK) {
-    auto responseText = http.getString();
-    DynamicJsonDocument weatherData(16384); //document to store JSON_data
-    DeserializationError error = deserializeJson(weatherData, responseText);
-
-    if (!error) {
-      tft.fillScreen(TFT_BLACK);
-      tft.setCursor(5, 5);
-
-      JsonObject forecast = weatherData["timeSeries"][0];
-      JsonArray params = forecast["parameters"];
-      //loop through all data, stores under different parameters 
-      float temperature = 0.0;
-      float wind = 0.0;
-      float humidity = 0.0;
-
-      for (JsonObject item : params) {
-        String paramName = item["name"];
-        float value = item["values"][0];
-
-        if (paramName == "t")      temperature = value;
-        else if (paramName == "ws") wind = value;
-        else if (paramName == "r")  humidity = value;
-      }
-      //shows wheater on the screen 
-      tft.setTextColor(TFT_WHITE, TFT_BLACK);
-      tft.setTextSize(2);
-      tft.println("Karlskrona");
-      tft.println();
-      tft.printf("Temp: %.1f C\n", temperature);
-      tft.printf("Wind: %.1f m/s\n", wind);
-      tft.printf("Humidity: %.0f%%\n", humidity);
-    } else {
-      tft.fillScreen(TFT_RED);
-      tft.setCursor(10, 10);
-      tft.setTextColor(TFT_WHITE, TFT_RED);
-      tft.setTextSize(2);
-      tft.println("JSON parse error!");
-    }
-  } else {
-    tft.fillScreen(TFT_RED);
-    tft.setCursor(10, 10);
-    tft.setTextColor(TFT_WHITE, TFT_RED);
-    tft.setTextSize(2);
-    tft.println("HTTP error!");
-  }
-
-  http.end(); // Avslutar HTTP-förbindelsen
-  delay(10000); // Vänta 10 sekunder innan nästa uppdatering
+  tft.drawString("Team 5, Version 1.0", 10, 10);
+  
+  delay(1000);
 }
-else if (displayMode == 0) { // us2.1
-  tft.fillScreen(TFT_BLACK); // us2.1
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK); // us2.1
-  tft.setTextSize(2); // us2.1
-  tft.drawString("Team 5", 10, 10); // us2.1
-  tft.drawString("Version 1.0", 10, 40); // us2.1
-  delay(3000); // us2.1
-} // us2.1
-
-} // us2.1
 
 
 // TFT Pin check
