@@ -14,7 +14,7 @@
 
 // Remember to remove these before commiting in GitHub
 String ssid = "BTH_Guest";
-String password = "Pingvin89Opel";
+String password = "Renault19X-15";
 
 // "tft" is the graphics libary, which has functions to draw on the screen
 TFT_eSPI tft = TFT_eSPI();
@@ -66,7 +66,7 @@ void setup() {
 
 /**
  * This is the main loop function that runs continuously after setup.
- * Add your code here to perform tasks repeatedly...
+ * Add your code here to perform tasks repeatedly.
  */
 void loop() {
   tft.fillScreen(TFT_BLACK);
@@ -110,7 +110,7 @@ void loop() {
       tft.setTextSize(2);
       tft.println("Karlskrona");
       tft.println();
-      tft.printf("Temp: %.1f C\n", temperature);
+      tft.printf("Temp: %.1f Celsius\n", temperature);
       tft.printf("Wind: %.1f m/s\n", wind);
       tft.printf("Humidity: %.0f%%\n", humidity);
     } else {
