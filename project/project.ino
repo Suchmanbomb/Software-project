@@ -130,18 +130,20 @@ void loop() {
 
   http.end(); // Avslutar HTTP-förbindelsen
   delay(10000); // Vänta 10 sekunder innan nästa uppdatering
-}
 
-void showMenu() {
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
-  tft.setTextSize(2);
-
-  tft.drawString("MENY", 120, 10); // Titel
+  }
+  void showMenu() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.setTextSize(2);
   
-  tft.setTextSize(2);
-  tft.drawString("1. Team Info", 20, 50);
-  tft.drawString("2. Weather", 20, 90);
-  tft.drawString("3. Historical", 20, 130);
-
+    tft.drawString("MENY", 120, 10); // Titel
+    
+    tft.setTextSize(2);
+    tft.drawString("1. Team Info", 20, 50);
+    tft.drawString("2. Weather", 20, 90);
+    tft.drawString("3. Historical", 20, 130);
 }
+
+
+
