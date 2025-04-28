@@ -14,7 +14,7 @@
 
 // Remember to remove these before commiting in GitHub
 String ssid = "BTH_Guest";
-String password = "Pingvin89Opel";
+String password = "Renault19X-15";
 
 // "tft" is the graphics libary, which has functions to draw on the screen
 TFT_eSPI tft = TFT_eSPI();
@@ -63,7 +63,6 @@ void setup() {
   // Add your code here 
   
 }
-
 /**
  * This is the main loop function that runs continuously after setup.
  * Add your code here to perform tasks repeatedly...
@@ -85,6 +84,7 @@ void loop() {
     auto responseText = http.getString();
     DynamicJsonDocument weatherData(16384); //document to store JSON_data
     DeserializationError error = deserializeJson(weatherData, responseText);
+
 
     if (!error) {
       tft.fillScreen(TFT_BLACK);
@@ -130,4 +130,18 @@ void loop() {
 
   http.end(); // Avslutar HTTP-förbindelsen
   delay(10000); // Vänta 10 sekunder innan nästa uppdatering
+}
+
+void showMenu() {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_GREEN, TFT_BLACK);
+  tft.setTextSize(2);
+
+  tft.drawString("MENY", 120, 10); // Titel
+  
+  tft.setTextSize(2);
+  tft.drawString("1. Team Info", 20, 50);
+  tft.drawString("2. Weather", 20, 90);
+  tft.drawString("3. Historical", 20, 130);
+
 }
