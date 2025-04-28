@@ -63,10 +63,9 @@ void setup() {
   // Add your code here 
   
 }
-
 /**
  * This is the main loop function that runs continuously after setup.
- * Add your code here to perform tasks repeatedly...
+ * Add your code here to perform tasks repeatedly.
  */
 void loop() {
   tft.fillScreen(TFT_BLACK);
@@ -86,6 +85,7 @@ void loop() {
     auto responseText = http.getString();
     DynamicJsonDocument weatherData(16384);
     DeserializationError error = deserializeJson(weatherData, responseText);
+
 
     if (!error) {
       tft.fillScreen(TFT_BLACK);
@@ -133,6 +133,17 @@ void loop() {
         // Begränsa till cirka 24 timmar (ex. varje 1h eller 3h beroende på API)
         if (displayedHours >= 8) break; 
       }
+<<<<<<< HEAD
+=======
+      //shows wheater on the screen 
+      tft.setTextColor(TFT_WHITE, TFT_BLACK);
+      tft.setTextSize(2);
+      tft.println("Karlskrona");
+      tft.println();
+      tft.printf("Temp: %.1f Celsius\n", temperature);
+      tft.printf("Wind: %.1f m/s\n", wind);
+      tft.printf("Humidity: %.0f%%\n", humidity);
+>>>>>>> a200ec379c8a1abdbefcb9a93b235b0f2fe86341
     } else {
       showError("JSON parse error!");
     }
@@ -140,6 +151,28 @@ void loop() {
     showError("HTTP error!");
   }
 
+<<<<<<< HEAD
   http.end();
   delay(10000);
 }
+=======
+  http.end(); // Avslutar HTTP-förbindelsen
+  delay(10000); // Vänta 10 sekunder innan nästa uppdatering
+
+  }
+  void showMenu() {
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+    tft.setTextSize(2);
+  
+    tft.drawString("MENY", 120, 10); // Titel
+    
+    tft.setTextSize(2);
+    tft.drawString("1. Team Info", 20, 50);
+    tft.drawString("2. Weather", 20, 90);
+    tft.drawString("3. Historical", 20, 130);
+}
+
+
+
+>>>>>>> a200ec379c8a1abdbefcb9a93b235b0f2fe86341
