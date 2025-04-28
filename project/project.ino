@@ -13,7 +13,7 @@
 
 // WiFi credentials
 String ssid = "BTH_Guest";
-String password = "Pingvin89Opel";
+String password = "Renault19x-15";
 
 // Display
 TFT_eSPI tft = TFT_eSPI();
