@@ -74,16 +74,15 @@ void loop() {
   tft.drawString("Team 5, version 1.0", 10, 10);
 
   delay(3000);
-
   HTTPClient http;
   String smhiUrl = "https://opendata-download-metanalys.smhi.se/api/category/mesan2g/version/1/geotype/point/lon/16/lat/58/data.json";
 
   http.begin(smhiUrl);
-  int httpCode = http.GET();
+  int httpCode = http.GET(); //HTTP-calll to SMHI 
 
   if (httpCode == HTTP_CODE_OK) {
     auto responseText = http.getString();
-    DynamicJsonDocument weatherData(16384);
+    DynamicJsonDocument weatherData(16384); //document to store JSON_data
     DeserializationError error = deserializeJson(weatherData, responseText);
 
 
@@ -91,50 +90,21 @@ void loop() {
       tft.fillScreen(TFT_BLACK);
       tft.setCursor(5, 5);
 
-      JsonArray forecastArray = weatherData["timeSeries"];
+      JsonObject forecast = weatherData["timeSeries"][0];
+      JsonArray params = forecast["parameters"];
+      //loop through all data, stores under different parameters 
+      float temperature = 0.0;
+      float wind = 0.0;
+      float humidity = 0.0;
 
-      int x = 0;
-      int y = 10;
-      int displayedHours = 0;
+      for (JsonObject item : params) {
+        String paramName = item["name"];
+        float value = item["values"][0];
 
-      for (JsonObject forecast : forecastArray) {
-        JsonArray params = forecast["parameters"];
-
-        float temperature = 0.0;
-        int weatherSymbol = -1;
-
-        for (JsonObject item : params) {
-          String paramName = item["name"];
-          if (paramName == "t") {
-            temperature = item["values"][0];
-          }
-          else if (paramName == "Wsymb2") {
-            weatherSymbol = item["values"][0];
-          }
-        }
-
-        // Rita ut data
-        if (weatherSymbol != -1) {
-          drawWeatherSymbol(x + 10, y, weatherSymbol);
-          tft.setCursor(x + 10, y + 30);
-          tft.setTextColor(TFT_WHITE, TFT_BLACK);
-          tft.setTextSize(1);
-          tft.printf("%.1fC", temperature);
-          
-          x += 60; // Nästa kolumn
-
-          if (x > DISPLAY_WIDTH - 60) {
-            x = 0;
-            y += 60; // Nästa rad
-          }
-          displayedHours += 1;
-        }
-
-        // Begränsa till cirka 24 timmar (ex. varje 1h eller 3h beroende på API)
-        if (displayedHours >= 8) break; 
+        if (paramName == "t")      temperature = value;
+        else if (paramName == "ws") wind = value;
+        else if (paramName == "r")  humidity = value;
       }
-<<<<<<< HEAD
-=======
       //shows wheater on the screen 
       tft.setTextColor(TFT_WHITE, TFT_BLACK);
       tft.setTextSize(2);
@@ -143,19 +113,21 @@ void loop() {
       tft.printf("Temp: %.1f Celsius\n", temperature);
       tft.printf("Wind: %.1f m/s\n", wind);
       tft.printf("Humidity: %.0f%%\n", humidity);
->>>>>>> a200ec379c8a1abdbefcb9a93b235b0f2fe86341
     } else {
-      showError("JSON parse error!");
+      tft.fillScreen(TFT_RED);
+      tft.setCursor(10, 10);
+      tft.setTextColor(TFT_WHITE, TFT_RED);
+      tft.setTextSize(2);
+      tft.println("JSON parse error!");
     }
   } else {
-    showError("HTTP error!");
+    tft.fillScreen(TFT_RED);
+    tft.setCursor(10, 10);
+    tft.setTextColor(TFT_WHITE, TFT_RED);
+    tft.setTextSize(2);
+    tft.println("HTTP error!");
   }
 
-<<<<<<< HEAD
-  http.end();
-  delay(10000);
-}
-=======
   http.end(); // Avslutar HTTP-förbindelsen
   delay(10000); // Vänta 10 sekunder innan nästa uppdatering
 
@@ -175,4 +147,3 @@ void loop() {
 
 
 
->>>>>>> a200ec379c8a1abdbefcb9a93b235b0f2fe86341
