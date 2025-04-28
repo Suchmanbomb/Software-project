@@ -66,7 +66,7 @@ void setup() {
 
 /**
  * This is the main loop function that runs continuously after setup.
- * Add your code here to perform tasks repeatedly.
+ * Add your code here to perform tasks repeatedly...
  */
 void loop() {
   tft.fillScreen(TFT_BLACK);
