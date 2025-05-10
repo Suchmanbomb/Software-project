@@ -12,8 +12,8 @@
 #include <time.h>
 
 // WiFi credentials
-String ssid = "BTH_Guest";
-String password = "Renault19x-15";
+String ssid = "Patrycjas iphone";
+String password = "123456788";
 
 // Display
 TFT_eSPI tft = TFT_eSPI();
@@ -272,14 +272,53 @@ void showForecastScreen() {
 
 // HISTORICAL
 void showHistoricalScreen() {
+  HTTPClient http;
+  String smhiUrl = "https://opendata-download-metobs.smhi.se/api/version/1.0/parameter/1/station/98210/period/latest-day/data.json";
+  
+  http.begin(smhiUrl);
+  int httpCode = http.GET();
+  
+  if (httpCode == HTTP_CODE_OK) {
+  auto responseText = http.getString();
+  DynamicJsonDocument weatherData(16384);
+  DeserializationError error = deserializeJson(weatherData, responseText);
+  
+  if (!error) {
   tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_ORANGE, TFT_BLACK);
+  tft.setCursor(5, 5);
   tft.setTextSize(2);
-  tft.drawString("Historical Data", 60, 20);
-
-  tft.setTextSize(1);
-  tft.drawString("Scroll with buttons", 60, 100);
-}
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  
+  JsonArray data = weatherData["value"];
+  if (data.size() > 0) {
+  auto latestEntry = data[data.size() - 1];
+  float temperature = latestEntry["value"];
+  String timestamp = latestEntry["date"];
+  
+  tft.println("Karlskrona (hist)");
+  tft.println();
+  tft.printf("Temp: %.1f C\n", temperature);
+  tft.println(timestamp.substring(0, 10));
+  } else {
+  tft.println("No data found.");
+  }
+  } else {
+  tft.fillScreen(TFT_RED);
+  tft.setCursor(10, 10);
+  tft.setTextColor(TFT_WHITE, TFT_RED);
+  tft.setTextSize(2);
+  tft.println("JSON parse error!");
+  }
+  } else {
+  tft.fillScreen(TFT_RED);
+  tft.setCursor(10, 10);
+  tft.setTextColor(TFT_WHITE, TFT_RED);
+  tft.setTextSize(2);
+  tft.println("HTTP error!");
+  }
+  
+  http.end();
+  }
 
 // SETTINGS
 void showSettingsScreen() {
