@@ -229,7 +229,7 @@ the program
 [x] US2.2B As a user, I want to access the menu from anywhere in the program
 by holding both buttons simultaneously
 
-[] US3.1 As a user, I want to have a menu option and screen to view historical
+[x] US3.1 As a user, I want to have a menu option and screen to view historical
 weather data.
 
 [] US1.2B As a user, I want to see temperature and weather conditions with
