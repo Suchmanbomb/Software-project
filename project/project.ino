@@ -181,25 +181,25 @@ void showMenu() {
 
 void drawMenuWithHighlight(int index) {
   tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.setTextColor(TFT_DARKGREEN, TFT_BLACK);
   tft.setTextSize(2);
   tft.drawString("Main Menu", 90, 20);
 
   tft.setTextSize(1);
 
   if (index == 0) tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  else tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  else tft.setTextColor(TFT_DARKGREEN, TFT_BLACK);
   tft.drawString("> Forecast", 40, 60);
 
   if (index == 1) tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  else tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  else tft.setTextColor(TFT_DARKGREEN, TFT_BLACK);
   tft.drawString("> Historical", 40, 80);
 
   if (index == 2) tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  else tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  else tft.setTextColor(TFT_DARKGREEN, TFT_BLACK);
   tft.drawString("> Settings", 40, 100);
 
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.setTextColor(TFT_DARKGREEN, TFT_BLACK);
   tft.drawString("Btn1=Next Btn2=Select", 20, 140);
 }
 
@@ -218,11 +218,11 @@ void showForecastScreen() {
   String smhiUrl = "https://opendata-download-metanalys.smhi.se/api/category/mesan2g/version/1/geotype/point/lon/16/lat/58/data.json";
 
   http.begin(smhiUrl);
-  int httpCode = http.GET();
+  int httpCode = http.GET(); //HTTP-calll to SMHI 
 
   if (httpCode == HTTP_CODE_OK) {
     auto responseText = http.getString();
-    DynamicJsonDocument weatherData(16384);
+    DynamicJsonDocument weatherData(16384); //document to store JSON_data
     DeserializationError error = deserializeJson(weatherData, responseText);
 
     if (!error) {
@@ -244,7 +244,6 @@ void showForecastScreen() {
         else if (paramName == "ws") wind = value;
         else if (paramName == "r")  humidity = value;
       }
-
       tft.setTextColor(TFT_WHITE, TFT_BLACK);
       tft.setTextSize(2);
       tft.println("Karlskrona");
@@ -323,7 +322,7 @@ void showHistoricalScreen() {
 // SETTINGS
 void showSettingsScreen() {
   tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_GREEN, TFT_BLACK);
+  tft.setTextColor(TFT_PINK, TFT_BLACK);
   tft.setTextSize(2);
   tft.drawString("Settings", 100, 20);
 
